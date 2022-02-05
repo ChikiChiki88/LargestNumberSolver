@@ -13,39 +13,49 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * @author Patrick Watt
+ * @author Patrick Watt & Jackson Fairbourn
  * @version 2022.02.05
  */
 class LargestNumberSolverTest
 {
 	Integer[] arr1, arr2, arr3, longArrHuge;
-	List<Integer[]> intList = new ArrayList<Integer[]>();
+	List<Integer[]> intArrList = new ArrayList<Integer[]>();
 	
 	@BeforeEach
 	void setUp()
 	{
 		arr1 = new Integer[] {1,45,9};
-		arr2 = new Integer[] {999, 639, 1, 7, 58, 9,};
-		arr3 = new Integer[] {5, 12, 52, 37, 4 }; // 55243712
+		arr2 = new Integer[] {5, 12, 52, 37, 4 }; // 55243712
+		arr3 = new Integer[] {999, 639, 1, 7, 58, 9,};
 		
 		
-		intList.add(arr1);
-		intList.add(arr2);
+		intArrList.add(arr1);
+		intArrList.add(arr2);
 		
+	}
+	
+	@Test 
+	void testInsertionSort() {
+		fail("Uniplemented Test");
 	}
 	
 	@Test
 	void testFindLargestNumber() {
+		Integer[] arr1Copy = arr1.clone();
 		assertEquals(9451, LargestNumberSolver.findLargestNumber(arr1));
-	}
-	@Test
-	void testFindLargestNumberOutOfRange() {
-		assertThrows(OutOfRangeException.class, () -> {LargestNumberSolver.findLargestNumber(arr2);});
+		assertEquals(arr1Copy, arr1);
 	}
 	
 	@Test
+	void testFindLargestNumberEmpty() {
+		assertEquals(0, LargestNumberSolver.findLargestNumber(new Integer[0]));
+	}
+//	
+	@Test
     void testFindLargestLong() {
+		Integer[] arr2Copy = arr2.clone();
         assertEquals(99997639581L, LargestNumberSolver.findLargestLong(arr2));
+		assertEquals(arr2Copy, arr2);
     }
 	
 	@Test
@@ -58,7 +68,9 @@ class LargestNumberSolverTest
 	
 	@Test
 	void testFindLargestInt() {
-		assertEquals(9451, LargestNumberSolver.findLargestNumber(arr1));
+		Integer[] arr1Copy = arr1.clone();
+		assertEquals(9451, LargestNumberSolver.findLargestInt(arr1));
+		assertEquals(arr1Copy, arr1);
 	}
 	
 	@Test
@@ -68,10 +80,60 @@ class LargestNumberSolverTest
 	
 	@Test
 	void testSum() {
-		int sum = (9451 + 55243712) ; // maybe bigInteger?
-		ArrayList<Integer[]> sumIntList = new ArrayList<Integer[]>(intList);
+		BigInteger sum = new BigInteger("55253163");
+		ArrayList<Integer[]> sumIntList = new ArrayList<Integer[]>(intArrList);
 
-		assertEquals(sum, LargestNumberSolver.sum(intList));
-		assertEquals(sumIntList, intList);
+		assertEquals(sum, LargestNumberSolver.sum(intArrList));
+		assertEquals(sumIntList, intArrList);
+	}
+	
+	@Test
+	void testFindKthLargest() {
+		assertEquals(arr1, LargestNumberSolver.findKthLargest(intArrList, 1));
+		assertEquals(arr2, LargestNumberSolver.findKthLargest(intArrList, 0));
+	}
+
+	@Test
+	void testFindKthLargestDoesNotChange() {
+		ArrayList<Integer[]> listCopy = new ArrayList<Integer[]>(intArrList);
+		Integer[] arr1Copy = arr1.clone();
+		Integer[] arr2Copy = arr2.clone();
+		
+		LargestNumberSolver.findKthLargest(intArrList, 0);
+		
+		assertEquals(listCopy, intArrList);
+		assertEquals(arr1Copy, arr1);
+		assertEquals(arr2Copy, arr2);
+	}
+	
+	@Test
+	void testFindKthLargestEffectExeption() {
+		assertThrows(IllegalArgumentException.class, () -> {LargestNumberSolver.findKthLargest(intArrList, -1);});
+	}
+	
+	@Test
+	void testReadFile() {
+		List<Integer[]> testList = LargestNumberSolver.readFile("integersSmall.txt");
+		
+		List<Integer[]> expectedList = new ArrayList<Integer[]>();
+		Integer[] tmp1 = {62, 42, 20, 69, 56};
+		Integer[] tmp2 = {67, 10, 45, 31, 61};
+		Integer[] tmp3 = {98, 5231, 67, 96, 88};
+		Integer[] tmp4 = {88, 51};
+		
+		expectedList.add(tmp1);
+		expectedList.add(tmp2);
+		expectedList.add(tmp3);
+		expectedList.add(tmp4);
+		
+		assertEquals(expectedList, testList);
+	}
+	
+	@Test
+	void testReadFileEmpty() {
+		List<Integer[]> testList = LargestNumberSolver.readFile("DNE.txt");
+		List<Integer[]> expectedList = new ArrayList<Integer[]>();
+		
+		assertEquals(expectedList, testList);
 	}
 }

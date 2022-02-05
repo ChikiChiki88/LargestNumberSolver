@@ -8,7 +8,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * @author Patrick Watt 
+ * @author Patrick Watt & Jackson Fairbourn
  * @version 2022.02.05
  */
 public class LargestNumberSolver
