@@ -24,11 +24,11 @@ public class LargestNumberSolver
 		T previous, temp;
 
 		for(int i = 1; i < arr.length; i++) {
-			int j = i -1;
+			int j = i - 1;
 			temp = arr[i];
 			previous = arr[j];
 
-			while (cmp.compare(previous, temp) > 0){
+			while (cmp.compare(temp, previous) > 0 && j >= 0){
 				arr[j + 1] = arr[j];
 				j = j - 1;
 			}
@@ -48,33 +48,49 @@ public static BigInteger findLargestNumber(Integer[] arr) {
 		return new BigInteger("0");
 	}
 	
-	// call insertionsort or lambda
+	// call insertionsort
 	String number = "";
 	Integer[] arrCopy = arr.clone();
 	
 	
-	insertionSort(arrCopy, );
-
-}
-
-private static int compare(Integer number, Integer other) {
-	char[] numberStr = number.toString().toCharArray();
-	char[] otherStr = other.toString().toCharArray();
-	int i = 0;
+	insertionSort(arrCopy, new SolverCompare());
 	
-	while(i < numberStr.length && i < otherStr.length ){
-		if(otherStr[i] > numberStr[i])		// First Digit comparison
-			return -1;
-		if(otherStr[i] < numberStr[i])
-			return 1;
-		i++;
+	StringBuilder bigNumber = new StringBuilder();
+	for(int i = 0; i < arrCopy.length; i++) {
+		bigNumber.append(arrCopy[i]);
 	}
 	
-	if(numberStr.length < otherStr.length)	 // other digit comparison
-		return -1;
-	if(numberStr.length > otherStr.length)
-		return 1;
-	return 0;
+	number = bigNumber.toString();
+	
+	return new BigInteger(number);
+}
+
+private static class SolverCompare implements Comparator<Integer>
+{
+
+	/**
+	 * @return 
+	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+	 */
+	public int compare(Integer number, Integer other){
+		char[] numberStr = number.toString().toCharArray();
+		char[] otherStr = other.toString().toCharArray();
+		int i = 0;
+		
+		while(i < numberStr.length && i < otherStr.length ){
+			if(numberStr[i] < otherStr[i])		// First Digit comparison
+				return -1;
+			if(numberStr[i] > otherStr[i])
+				return 1;
+			i++;
+		}
+		
+		if(numberStr.length < otherStr.length)	 // other digit comparison
+			return -1;
+		if(numberStr.length > otherStr.length)
+			return 1;
+		return 0;
+	}
 }
 
 /**

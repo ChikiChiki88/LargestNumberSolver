@@ -42,13 +42,17 @@ class LargestNumberSolverTest
 	@Test
 	void testFindLargestNumber() {
 		Integer[] arr1Copy = arr1.clone();
-		assertEquals(9451, LargestNumberSolver.findLargestNumber(arr1));
-		assertEquals(arr1Copy, arr1);
+		
+		assertEquals(new BigInteger("9451"), LargestNumberSolver.findLargestNumber(arr1));
+		
+		for (int i = 0; i < arr1Copy.length; i++) {
+			assertEquals(arr1Copy[i], arr1[i]);
+		}
 	}
 	
 	@Test
 	void testFindLargestNumberEmpty() {
-		assertEquals(0, LargestNumberSolver.findLargestNumber(new Integer[0]));
+		assertEquals(new BigInteger("0"), LargestNumberSolver.findLargestNumber(new Integer[0]));
 	}
 //	
 	@Test
