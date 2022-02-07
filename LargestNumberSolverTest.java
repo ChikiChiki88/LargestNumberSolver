@@ -26,8 +26,12 @@ class LargestNumberSolverTest
 	{
 		arr1 = new Integer[] {1,45,9};
 		arr2 = new Integer[] {5, 12, 52, 37, 4 }; // 55243712
-		arr3 = new Integer[] {999, 639, 1, 7, 58, 9,};
+		arr3 = new Integer[] {999, 639, 1, 7, 58, 9,}; //99997639581L //
 		
+		longArrHuge = new Integer[64];
+		for(int i = 0; i < 64; i++) {
+			longArrHuge[i] = 99;
+		}
 		
 		intArrList.add(arr1);
 		intArrList.add(arr2);
@@ -57,16 +61,15 @@ class LargestNumberSolverTest
 //	
 	@Test
     void testFindLargestLong() {
-		Integer[] arr2Copy = arr2.clone();
-        assertEquals(99997639581L, LargestNumberSolver.findLargestLong(arr2));
-		assertEquals(arr2Copy, arr2);
+		Integer[] arr3Copy = arr3.clone();
+        assertEquals(99997639581L, LargestNumberSolver.findLargestLong(arr3));
+        for (int i = 0; i < arr3Copy.length; i++) {
+			assertEquals(arr3Copy[i], arr3[i]);
+		}
     }
 	
 	@Test
 	void testFindLargestLongOutOfRange() {
-		for(int i = 0; i < 64; i++) {
-			longArrHuge[i] = 99;
-		}
 		assertThrows(OutOfRangeException.class, () -> {LargestNumberSolver.findLargestLong(longArrHuge);});
 	}
 	
@@ -74,12 +77,14 @@ class LargestNumberSolverTest
 	void testFindLargestInt() {
 		Integer[] arr1Copy = arr1.clone();
 		assertEquals(9451, LargestNumberSolver.findLargestInt(arr1));
-		assertEquals(arr1Copy, arr1);
+		for (int i = 0; i < arr1Copy.length; i++) {
+			assertEquals(arr1Copy[i], arr1[i]);
+		}
 	}
 	
 	@Test
 	void testFindLargestIntOutOfRange() {
-		assertThrows(OutOfRangeException.class, () -> {LargestNumberSolver.findLargestInt(arr2);}); 
+		assertThrows(OutOfRangeException.class, () -> {LargestNumberSolver.findLargestInt(longArrHuge);}); 
 	}
 	
 	@Test

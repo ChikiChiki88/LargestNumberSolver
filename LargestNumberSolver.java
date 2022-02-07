@@ -23,14 +23,18 @@ public class LargestNumberSolver
 	public static <T> void insertionSort(T[] arr, Comparator<? super T> cmp){
 		T previous, temp;
 
-		for(int i = 1; i < arr.length; i++) {
+		for(int i = 1; i < arr.length; i++) { // sort each value
 			int j = i - 1;
 			temp = arr[i];
 			previous = arr[j];
 
-			while (cmp.compare(temp, previous) > 0 && j >= 0){
-				arr[j + 1] = arr[j];
+			while (cmp.compare(temp, previous) > 0 && j >= 0){ // shift value to correct position (compare to previously sorted items)
+				arr[j + 1] = arr[j]; // compare to previous item
 				j = j - 1;
+				if(j >= 0) { 		 // set previous to be next item to compare.
+					previous = arr[j];
+				}
+					
 			}
 			arr[j + 1] = temp;
 		}
@@ -43,7 +47,7 @@ public class LargestNumberSolver
  * @param arr
  * @return
  */
-public static BigInteger findLargestNumber(Integer[] arr) {
+public static BigInteger findLargestNumber(Integer[] arr) { // 9 58 7 999 639 1
 	if(arr.length == 0) {
 		return new BigInteger("0");
 	}
@@ -67,7 +71,6 @@ public static BigInteger findLargestNumber(Integer[] arr) {
 
 private static class SolverCompare implements Comparator<Integer>
 {
-
 	/**
 	 * @return 
 	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
@@ -77,7 +80,8 @@ private static class SolverCompare implements Comparator<Integer>
 		char[] otherStr = other.toString().toCharArray();
 		int i = 0;
 		
-		while(i < numberStr.length && i < otherStr.length ){
+		while(i < numberStr.length && i < otherStr.length){ // 999 1
+			//if(length is same do this) values are different
 			if(numberStr[i] < otherStr[i])		// First Digit comparison
 				return -1;
 			if(numberStr[i] > otherStr[i])
@@ -95,16 +99,20 @@ private static class SolverCompare implements Comparator<Integer>
 
 /**
  * This method returns the largest int value that can be formed by arranging the integers of the given array, in any order.  
- * An OutOfRangeException  Download OutOfRangeExceptionis thrown if the largest number that can be formed is too large for the int data type.  
+ * An OutOfRangeException Download OutOfRangeException is thrown if the largest number that can be formed is too large for the int data type.  
  * Logic for solving the problem of determining the largest number should not appear again in this method — call an existing public method or a helper method.  
  * This method must not alter the given array.
- * @param arr
- * @return
- * @throws OutOfRangeException
+ * @param arr the array to look through
+ * @return the largest int value that can be formed by arranging the integers of the given array, in any order.
+ * @throws OutOfRangeException if overflows int capacity.
  */
 public static int findLargestInt(Integer[] arr) throws OutOfRangeException{
-	return 0;
-
+	BigInteger bigIntNum = findLargestNumber(arr);
+	int intNum = bigIntNum.intValue();
+	if(bigIntNum.equals(new BigInteger(((Integer)intNum).toString()))){
+		return intNum;
+	}
+	throw new OutOfRangeException("int");
 }
 
 /**
@@ -114,8 +122,12 @@ public static int findLargestInt(Integer[] arr) throws OutOfRangeException{
  * @throws OutOfRangeException
  */
 public static long findLargestLong(Integer[] arr) throws OutOfRangeException{
-	return 0;
-
+	BigInteger bigIntNum = findLargestNumber(arr);
+	long longNum = bigIntNum.longValue();
+	if(bigIntNum.equals(new BigInteger(((Long)longNum).toString()))){
+		return longNum;
+	}
+	throw new OutOfRangeException("long");
 }
 
 /**
