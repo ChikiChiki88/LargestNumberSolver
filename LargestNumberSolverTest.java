@@ -55,6 +55,13 @@ class LargestNumberSolverTest
 	}
 	
 	@Test
+	void testFindLargestNumberAdditional() {		
+		assertEquals(new BigInteger("9451"), LargestNumberSolver.findLargestNumber(arr1));
+		assertEquals(new BigInteger("55243712"), LargestNumberSolver.findLargestNumber(arr2));
+		assertEquals(new BigInteger("99997639581"), LargestNumberSolver.findLargestNumber(arr3));
+	}
+	
+	@Test
 	void testFindLargestNumberEmpty() {
 		assertEquals(new BigInteger("0"), LargestNumberSolver.findLargestNumber(new Integer[0]));
 	}

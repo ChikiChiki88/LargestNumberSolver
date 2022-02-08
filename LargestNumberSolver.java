@@ -34,7 +34,6 @@ public class LargestNumberSolver
 				if(j >= 0) { 		 // set previous to be next item to compare.
 					previous = arr[j];
 				}
-					
 			}
 			arr[j + 1] = temp;
 		}
@@ -90,9 +89,9 @@ private static class SolverCompare implements Comparator<Integer>
 		}
 		
 		if(numberStr.length < otherStr.length)	 // other digit comparison
-			return -1;
-		if(numberStr.length > otherStr.length)
 			return 1;
+		if(numberStr.length > otherStr.length)
+			return -1;
 		return 0;
 	}
 }
@@ -137,8 +136,13 @@ public static long findLargestLong(Integer[] arr) throws OutOfRangeException{
  * @return
  */
 public static BigInteger sum(List<Integer[]> list) {
-	return null;
-
+	BigInteger sum = new BigInteger("0");
+	
+	for (Integer[] e : list) {
+		sum = sum.add(new BigInteger(findLargestNumber(e).toString()));
+	}
+	
+	return sum;
 }
 
 /**
