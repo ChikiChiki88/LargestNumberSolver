@@ -51,10 +51,9 @@ public static BigInteger findLargestNumber(Integer[] arr) { // 9 58 7 999 639 1
 		return new BigInteger("0");
 	}
 	
-	// call insertionsort
+	// call insertion sort
 	String number = "";
 	Integer[] arrCopy = arr.clone();
-	
 	
 	insertionSort(arrCopy, new SolverCompare());
 	
@@ -95,6 +94,25 @@ private static class SolverCompare implements Comparator<Integer>
 		return 0;
 	}
 }
+
+private static class ArrayComparator implements Comparator<Integer[]>
+{
+	/**
+	 * @return 
+	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+	 */
+	
+
+	@Override
+	public int compare(Integer[] o1, Integer[] o2) {
+		BigInteger first = findLargestNumber(o1);
+		BigInteger second = findLargestNumber(o2);
+		
+		BigInteger result = first.subtract(second);
+		return result.intValue();
+	}
+}
+
 
 /**
  * This method returns the largest int value that can be formed by arranging the integers of the given array, in any order.  
@@ -157,8 +175,18 @@ public static BigInteger sum(List<Integer[]> list) {
  * @throws IllegalArgumentException
  */
 public static Integer[] findKthLargest(List<Integer[]> list, int k) throws IllegalArgumentException{
+	// sort the list based on largestNumber, return list at k,
+	// 
+	for(int i = 0; i < list.size(); i++) {
+		Integer[] copy = list.get(i).clone();
+		insertionSort(copy, new SolverCompare());
+		BigInteger current = new BigInteger(findLargestNumber(copy).toString());
+		
+		
+		// compare to all others, sort them by 
+	}
+//		insertionSort(<Integer[]>list.toArray(), new ArrayComparator() );
 	return null;
-
 }
 
 /**
