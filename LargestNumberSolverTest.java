@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -40,7 +41,11 @@ class LargestNumberSolverTest
 	
 	@Test 
 	void testInsertionSort() {
-		fail("Uniplemented Test");
+		Integer[] expeced1 = arr1.clone();
+		Integer[] expeced2 = arr1.clone();
+		Integer[] expeced3 = arr3.clone();
+		
+		insertionSort(arr1, (Comparator<Integer>) ((o1, o2) -> o1.getTime() - o2.getTime()));
 	}
 	
 	@Test
@@ -118,8 +123,13 @@ class LargestNumberSolverTest
 		LargestNumberSolver.findKthLargest(intArrList, 0);
 		
 		assertEquals(listCopy, intArrList);
-		assertEquals(arr1Copy, arr1);
-		assertEquals(arr2Copy, arr2);
+		
+		for (int i = 0; i < arr1Copy.length; i++) {
+			assertEquals(arr1Copy[i], arr1[i]);
+		}
+		for (int i = 0; i < arr2Copy.length; i++) {
+			assertEquals(arr2Copy[i], arr2[i]);
+		}
 	}
 	
 	@Test
@@ -129,7 +139,7 @@ class LargestNumberSolverTest
 	
 	@Test
 	void testReadFile() {
-		List<Integer[]> testList = LargestNumberSolver.readFile("integersSmall.txt");
+		List<Integer[]> testList = LargestNumberSolver.readFile("src/assign04/integersSmall.txt");
 		
 		List<Integer[]> expectedList = new ArrayList<Integer[]>();
 		Integer[] tmp1 = {62, 42, 20, 69, 56};
@@ -142,7 +152,9 @@ class LargestNumberSolverTest
 		expectedList.add(tmp3);
 		expectedList.add(tmp4);
 		
-		assertEquals(expectedList, testList);
+		for (int i = 0; i < expectedList.size(); i++)
+			for (int j = 0; j < expectedList.get(i).length; j++)
+				assertEquals(expectedList.get(i)[j], testList.get(i)[j]);
 	}
 	
 	@Test

@@ -3,10 +3,13 @@
  */
 package assign04;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * @author Patrick Watt & Jackson Fairbourn
@@ -95,18 +98,23 @@ private static class SolverCompare implements Comparator<Integer>
 	}
 }
 
-private static class ArrayComparator implements Comparator<Integer[]>
+private static class ArrayComparator implements Comparator<Object>
 {
 	/**
 	 * @return 
 	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 	 */
 	
-
 	@Override
-	public int compare(Integer[] o1, Integer[] o2) {
-		BigInteger first = findLargestNumber(o1);
-		BigInteger second = findLargestNumber(o2);
+	public int compare(Object o1, Object o2) {
+		if (!(o1 instanceof Integer[] && o2 instanceof Integer[]))
+			throw new IllegalArgumentException();
+		
+		Integer[] a1 = (Integer[]) o1;
+		Integer[] a2 = (Integer[]) o2;
+		
+		BigInteger first = findLargestNumber(a1);
+		BigInteger second = findLargestNumber(a2);
 		
 		BigInteger result = first.subtract(second);
 		return result.intValue();
@@ -114,89 +122,116 @@ private static class ArrayComparator implements Comparator<Integer[]>
 }
 
 
-/**
- * This method returns the largest int value that can be formed by arranging the integers of the given array, in any order.  
- * An OutOfRangeException Download OutOfRangeException is thrown if the largest number that can be formed is too large for the int data type.  
- * Logic for solving the problem of determining the largest number should not appear again in this method — call an existing public method or a helper method.  
- * This method must not alter the given array.
- * @param arr the array to look through
- * @return the largest int value that can be formed by arranging the integers of the given array, in any order.
- * @throws OutOfRangeException if overflows int capacity.
- */
-public static int findLargestInt(Integer[] arr) throws OutOfRangeException{
-	BigInteger bigIntNum = findLargestNumber(arr);
-	int intNum = bigIntNum.intValue();
-	if(bigIntNum.equals(new BigInteger(((Integer)intNum).toString()))){
-		return intNum;
-	}
-	throw new OutOfRangeException("int");
-}
-
-/**
- * This method behaves the same as the previous method, but for data type long instead of data type int.
- * @param arr
- * @return
- * @throws OutOfRangeException
- */
-public static long findLargestLong(Integer[] arr) throws OutOfRangeException{
-	BigInteger bigIntNum = findLargestNumber(arr);
-	long longNum = bigIntNum.longValue();
-	if(bigIntNum.equals(new BigInteger(((Long)longNum).toString()))){
-		return longNum;
-	}
-	throw new OutOfRangeException("long");
-}
-
-/**
- * This method sums the largest numbers that can be formed by each array in the given list.  
- * This method must not alter the given list.
- * @param list
- * @return
- */
-public static BigInteger sum(List<Integer[]> list) {
-	BigInteger sum = new BigInteger("0");
-	
-	for (Integer[] e : list) {
-		sum = sum.add(new BigInteger(findLargestNumber(e).toString()));
+	/**
+	 * This method returns the largest int value that can be formed by arranging the integers of the given array, in any order.  
+	 * An OutOfRangeException Download OutOfRangeException is thrown if the largest number that can be formed is too large for the int data type.  
+	 * Logic for solving the problem of determining the largest number should not appear again in this method — call an existing public method or a helper method.  
+	 * This method must not alter the given array.
+	 * @param arr the array to look through
+	 * @return the largest int value that can be formed by arranging the integers of the given array, in any order.
+	 * @throws OutOfRangeException if overflows int capacity.
+	 */
+	public static int findLargestInt(Integer[] arr) throws OutOfRangeException{
+		BigInteger bigIntNum = findLargestNumber(arr);
+		int intNum = bigIntNum.intValue();
+		if(bigIntNum.equals(new BigInteger(((Integer)intNum).toString()))){
+			return intNum;
+		}
+		throw new OutOfRangeException("int");
 	}
 	
-	return sum;
-}
-
-/**
- * This method determines the kth largest number that can be formed by each array in the given list.  
- * E.g., if k=0 returns the largest overall, if k=list.size()-1 returns the smallest overall.  
- * This method returns the original array that represents the kth largest number, not the kth largest number itself.  
- * An IllegalArgumentException (Links to an external site.) is thrown if k is not a valid position in the list.  
- * This method must not alter the given list and must call your insertionSort method with a Comparator or lambda expression that you design.
- * @param list
- * @param k
- * @return
- * @throws IllegalArgumentException
- */
-public static Integer[] findKthLargest(List<Integer[]> list, int k) throws IllegalArgumentException{
-	// sort the list based on largestNumber, return list at k,
-	// 
-	for(int i = 0; i < list.size(); i++) {
-		Integer[] copy = list.get(i).clone();
-		insertionSort(copy, new SolverCompare());
-		BigInteger current = new BigInteger(findLargestNumber(copy).toString());
-		
-		
-		// compare to all others, sort them by 
+	/**
+	 * This method behaves the same as the previous method, but for data type long instead of data type int.
+	 * @param arr
+	 * @return
+	 * @throws OutOfRangeException
+	 */
+	public static long findLargestLong(Integer[] arr) throws OutOfRangeException{
+		BigInteger bigIntNum = findLargestNumber(arr);
+		long longNum = bigIntNum.longValue();
+		if(bigIntNum.equals(new BigInteger(((Long)longNum).toString()))){
+			return longNum;
+		}
+		throw new OutOfRangeException("long");
 	}
-//		insertionSort(<Integer[]>list.toArray(), new ArrayComparator() );
-	return null;
-}
-
-/**
- * This method generates list of integer arrays from an input file, 
- * such that each line corresponds to one array of integers separated by blank spaces, 
- * and returns an empty list if the file does not exist.
- * @param filename
- * @return
- */
-public static List<Integer[]> readFile(String filename){
-	return null;
-}
+	
+	/**
+	 * This method sums the largest numbers that can be formed by each array in the given list.  
+	 * This method must not alter the given list.
+	 * @param list
+	 * @return
+	 */
+	public static BigInteger sum(List<Integer[]> list) {
+		BigInteger sum = new BigInteger("0");
+		
+		for (Integer[] e : list) {
+			sum = sum.add(new BigInteger(findLargestNumber(e).toString()));
+		}
+		
+		return sum;
+	}
+	
+	/**
+	 * This method determines the kth largest number that can be formed by each array in the given list.  
+	 * E.g., if k=0 returns the largest overall, if k=list.size()-1 returns the smallest overall.  
+	 * This method returns the original array that represents the kth largest number, not the kth largest number itself.  
+	 * An IllegalArgumentException (Links to an external site.) is thrown if k is not a valid position in the list.  
+	 * This method must not alter the given list and must call your insertionSort method with a Comparator or lambda expression that you design.
+	 * @param list
+	 * @param k
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public static Integer[] findKthLargest(List<Integer[]> list, int k) throws IllegalArgumentException{
+		if (k > list.size() - 1 || k < 0)
+			throw new IllegalArgumentException();
+		
+		Object[] a = list.toArray();
+		insertionSort(a, new ArrayComparator());
+		Integer[] result = (Integer[]) a[k];
+		return result;
+	}
+	
+	/**
+	 * This method generates list of integer arrays from an input file, 
+	 * such that each line corresponds to one array of integers separated by blank spaces, 
+	 * and returns an empty list if the file does not exist.
+	 * @param filename
+	 * @return
+	 */
+	public static List<Integer[]> readFile(String filename){
+		List<Integer[]> resultList = new ArrayList<Integer[]>();
+		
+		
+		try {
+			File file = new File(filename);
+			if (!file.exists())
+			{
+				return resultList;
+			}
+			Scanner fileIn = new Scanner(file);
+			
+			while(fileIn.hasNextLine()) {				
+				String thisLine = fileIn.nextLine();
+				
+				Scanner lineScanner = new Scanner(thisLine);
+				
+				List<Integer> tmp = new ArrayList<Integer>();
+				
+				while(lineScanner.hasNext()) {
+					tmp.add(lineScanner.nextInt());
+				}
+				
+				resultList.add(tmp.toArray(new Integer[tmp.size()]));
+				
+				tmp.clear();
+				lineScanner.close();
+			}
+			fileIn.close();
+			return resultList;
+		}
+		catch(FileNotFoundException e) {
+			return resultList;
+		}
+	}
 }
