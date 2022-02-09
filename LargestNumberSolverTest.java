@@ -17,14 +17,13 @@ import org.junit.jupiter.api.Test;
  * @author Patrick Watt & Jackson Fairbourn
  * @version 2022.02.05
  */
-class LargestNumberSolverTest
-{
+class LargestNumberSolverTest{
+	
 	Integer[] arr1, arr2, arr3, longArrHuge;
 	List<Integer[]> intArrList = new ArrayList<Integer[]>();
 	
 	@BeforeEach
-	void setUp()
-	{
+	void setUp(){
 		arr1 = new Integer[] {1,45,9};
 		arr2 = new Integer[] {5, 12, 52, 37, 4 }; // 55243712
 		arr3 = new Integer[] {999, 639, 1, 7, 58, 9,}; //99997639581L //
@@ -36,16 +35,39 @@ class LargestNumberSolverTest
 		
 		intArrList.add(arr1);
 		intArrList.add(arr2);
-		
 	}
 	
 	@Test 
 	void testInsertionSort() {
-		Integer[] expeced1 = arr1.clone();
-		Integer[] expeced2 = arr1.clone();
-		Integer[] expeced3 = arr3.clone();
+		Integer[] expected1 = {1, 9, 45};
+		Integer[] expected2 = {4, 5, 12, 37, 52};
+		Integer[] expected3 = {1, 7, 9, 58, 639, 999};
 		
-		insertionSort(arr1, (Comparator<Integer>) ((o1, o2) -> o1.getTime() - o2.getTime()));
+		LargestNumberSolver.insertionSort(arr1, new basicComparator());
+		LargestNumberSolver.insertionSort(arr2, new basicComparator());
+		LargestNumberSolver.insertionSort(arr3, new basicComparator());
+		
+		for(int i = 0; i < expected1.length; i++) {
+			assertEquals(expected1[i], arr1[i]);
+		}
+		
+		for(int i = 0; i < expected2.length; i++) {
+			assertEquals(expected2[i], arr2[i]);
+		}
+		
+		for(int i = 0; i < expected3.length; i++) {
+			assertEquals(expected3[i], arr3[i]);
+		}
+	}
+	
+	private static class basicComparator implements Comparator<Integer>{
+		/**
+		 * @return 
+		 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+		 */
+		public int compare(Integer number, Integer other){
+			return other.compareTo(number);
+		}
 	}
 	
 	@Test
@@ -70,7 +92,7 @@ class LargestNumberSolverTest
 	void testFindLargestNumberEmpty() {
 		assertEquals(new BigInteger("0"), LargestNumberSolver.findLargestNumber(new Integer[0]));
 	}
-//	
+	
 	@Test
     void testFindLargestLong() {
 		Integer[] arr3Copy = arr3.clone();
