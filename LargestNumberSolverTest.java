@@ -19,14 +19,15 @@ import org.junit.jupiter.api.Test;
  */
 class LargestNumberSolverTest{
 	
-	Integer[] arr1, arr2, arr3, longArrHuge;
+	Integer[] arr1, arr2, arr3, arr4, longArrHuge;
 	List<Integer[]> intArrList = new ArrayList<Integer[]>();
 	
 	@BeforeEach
 	void setUp(){
 		arr1 = new Integer[] {1,45,9};
-		arr2 = new Integer[] {5, 12, 52, 37, 4 }; // 55243712
-		arr3 = new Integer[] {999, 639, 1, 7, 58, 9,}; //99997639581L //
+		arr2 = new Integer[] {5, 12, 52, 37, 4 };      // 55243712
+		arr3 = new Integer[] {999, 639, 1, 7, 58, 9,}; // 99997639581L 
+		arr4 = new Integer[] {11, 67, 79, 7, 22, 13};  // 79767221311
 		
 		longArrHuge = new Integer[64];
 		for(int i = 0; i < 64; i++) {
@@ -66,7 +67,7 @@ class LargestNumberSolverTest{
 		 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 		 */
 		public int compare(Integer number, Integer other){
-			return other.compareTo(number);
+			return number.compareTo(other);
 		}
 	}
 	
@@ -86,6 +87,7 @@ class LargestNumberSolverTest{
 		assertEquals(new BigInteger("9451"), LargestNumberSolver.findLargestNumber(arr1));
 		assertEquals(new BigInteger("55243712"), LargestNumberSolver.findLargestNumber(arr2));
 		assertEquals(new BigInteger("99997639581"), LargestNumberSolver.findLargestNumber(arr3));
+		assertEquals(new BigInteger("79767221311"), LargestNumberSolver.findLargestNumber(arr4));
 	}
 	
 	@Test

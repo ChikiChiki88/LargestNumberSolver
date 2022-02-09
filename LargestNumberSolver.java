@@ -31,7 +31,7 @@ public class LargestNumberSolver {
 			temp = arr[i];
 			previous = arr[j];
 
-			while (cmp.compare(temp, previous) > 0 && j >= 0){ // shift value to correct position (compare to previously sorted items)
+			while (cmp.compare(temp, previous) < 0 && j >= 0){ // shift value to correct position (compare to previously sorted items)
 				arr[j + 1] = arr[j]; // compare to previous item
 				j = j - 1;
 				if(j >= 0) { 		 // set previous to be next item to compare.
@@ -77,19 +77,38 @@ public class LargestNumberSolver {
 			char[] otherStr = other.toString().toCharArray();
 			int i = 0;
 
-			while(i < numberStr.length && i < otherStr.length){ // 999 1
+			while(i < numberStr.length && i < otherStr.length && numberStr.length == otherStr.length){ // 999 1
 				//if(length is same do this) values are different
 				if(numberStr[i] < otherStr[i])		// First Digit comparison
-					return -1;
-				if(numberStr[i] > otherStr[i])
 					return 1;
+				if(numberStr[i] > otherStr[i])
+					return -1;
 				i++;
 			}
 
-			if(numberStr.length < otherStr.length)	 // other digit comparison
-				return 1;
-			if(numberStr.length > otherStr.length)
-				return -1;
+			int lastIndex =  i;
+			if (numberStr.length < otherStr.length) { 
+				// If otherStr is longer than numberStr 
+				// continue comparing digits of otherStr with the last index of numberStr
+				while (i < otherStr.length) {
+					if(numberStr[lastIndex] < otherStr[i])
+						return 1;
+					if(numberStr[lastIndex] > otherStr[i])
+						return -1;
+					i++;
+				}
+			 } else {
+				 // If numberStr is longer than otherStr
+				 // do the reverse
+				 while (i < numberStr.length) {
+					 if(numberStr[i] < otherStr[lastIndex])
+						 return 1;
+					 if(numberStr[i] > otherStr[lastIndex])
+						 return -1;
+					 i++;
+				 }
+			 }
+			
 			return 0;
 		}
 	}
@@ -100,17 +119,17 @@ public class LargestNumberSolver {
 		 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 		 */
 		@Override
-		public int compare(Object o1, Object o2) {
-			if (!(o1 instanceof Integer[] && o2 instanceof Integer[]))
+		public int compare(Object number, Object other) {
+			if (!(number instanceof Integer[] && other instanceof Integer[]))
 				throw new IllegalArgumentException();
 
-			Integer[] a1 = (Integer[]) o1;
-			Integer[] a2 = (Integer[]) o2;
+			Integer[] numberArr = (Integer[]) number;
+			Integer[] otherArr = (Integer[]) other;
 
-			BigInteger first = findLargestNumber(a1);
-			BigInteger second = findLargestNumber(a2);
+			BigInteger numberBigInt = findLargestNumber(numberArr);
+			BigInteger otherBigInt = findLargestNumber(otherArr);
 
-			BigInteger result = first.subtract(second);
+			BigInteger result = otherBigInt.subtract(numberBigInt);
 			return result.intValue();
 		}
 	}
